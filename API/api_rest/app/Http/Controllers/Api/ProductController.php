@@ -20,9 +20,13 @@ class ProductController extends Controller
         $data = ['data' => $this->product->paginate(10)];
         return response()->json($data);
     }
-    public function show(Product $id)
+    public function show($id)
     {
-        return $id;
+        $product = $this->product->find($id);
+
+        if(!$product)return response()->json(['data'=>['msg'=>'Produto não encontrado']], 404);
+        $data = ['data'=>$product];
+        return response()->json($data);
     }
 
     public function store(Request $request)
@@ -63,7 +67,7 @@ class ProductController extends Controller
         try {
             $id->delete();
             return response()->json(['data' => ['msg' => 'Produto: ' . $id->name . ' removido com sucesso!']], 200);
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
             if (config(('app.debug'))) {
                 return response()->json(ApiError::errorMessage($e->getMessage(), 1012));
             }
