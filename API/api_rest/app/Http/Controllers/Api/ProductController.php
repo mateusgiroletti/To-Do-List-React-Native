@@ -17,7 +17,7 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $data = ['data' => $this->product->paginate(10)];
+        $data = $this->product->all();
         return response()->json($data);
     }
     public function show($id)
