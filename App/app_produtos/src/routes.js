@@ -1,9 +1,14 @@
 import { createStackNavigator} from 'react-navigation';
 
-import Main from './pages/main';
+import Main from './pages/Main';
+import Listar from './pages/Listar';
+import Cadastrar from './pages/Cadastrar';
+
 
 export default createStackNavigator({
-    Main
+    Main,
+    Listar,
+    Cadastrar
 },{
     navigationOptions:{
         headerStyle:{
