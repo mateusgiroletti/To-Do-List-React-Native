@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from '../services/api';
 
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, RefreshControl  } from 'react-native';
 
 export default class Listar extends Component {
     static navigationOptions = {
@@ -9,7 +9,8 @@ export default class Listar extends Component {
     };
 
     state = {
-        data: []
+        data: [],
+        refreshing: false,
     };
 
     componentDidMount() {
@@ -22,7 +23,17 @@ export default class Listar extends Component {
 
         const { data } = response.data;
 
-        this.setState({ data });
+        this.setState({ data, refreshing:false });
+    };
+
+    handleRefresh = () =>{
+        this.setState({
+            page:1,
+            refreshing: true,
+            seed:this.state.seed + 1,
+        }, ()=>{
+            this.loadProducts();
+        })
     };
 
     renderItem = ({ item }) => (
@@ -43,6 +54,8 @@ export default class Listar extends Component {
                     data={this.state.data}
                     keyExtractor={item => item.id}
                     renderItem={this.renderItem}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.handleRefresh}
                 />
             </View>
         );
